@@ -1,0 +1,54 @@
+﻿@model CoreMvcLab.Models.BoardIndexViewModel
+
+@{
+    ViewData["Title"] = "掲示板";
+}
+
+<h1 class="mb-4">掲示板</h1>
+
+<div class="row mb-4">
+    <div class="col-md-9">
+        <form asp-controller="Board" asp-action="Index" method="get" class="input-group">
+            <input type="text" name="title" class="form-control" placeholder="タイトルで検索">
+            <button class="btn btn-outline-secondary" type="submit">
+            <i class="bi bi-search"></i> 検索
+            </button>
+        </form>
+    </div>
+
+    <div class="col-md-3 text-md-center mt-2 mt-md-0">
+        <a asp-action="Create" class="btn btn-primary">
+            <i class="bi bi-pencil-square"></i> 新規投稿
+        </a>
+    </div>
+</div>
+
+
+
+    @if (Model.Boards == null || !Model.Boards.Any())
+    {
+        <p>投稿はまだありません。</p>
+    }
+    else
+    {
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>@Html.DisplayNameFor(Model => Model.Boards![0].Title)</th>
+                    <th>@Html.DisplayNameFor(Model => Model.Boards![0].CreatedName)</th>
+                    <th>@Html.DisplayNameFor(Model => Model.Boards![0].CreatedAt)</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var post in Model.Boards!)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => post.Title)</td>
+                        <td>@Html.DisplayFor(modelItem => post.CreatedName)</td>
+                        <td>@Html.DisplayFor(modelItem => post.CreatedAt)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
