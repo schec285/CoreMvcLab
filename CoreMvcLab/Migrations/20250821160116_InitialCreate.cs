@@ -17,7 +17,7 @@ namespace CoreMvcLab.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CreatedName = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    CreatedName = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
                     Title = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     Body = table.Column<string>(type: "nvarchar(1500)", maxLength: 1500, nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -35,9 +35,9 @@ namespace CoreMvcLab.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     BoardId = table.Column<int>(type: "int", nullable: false),
-                    ReplyName = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    RepliedName = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     Body = table.Column<string>(type: "nvarchar(1500)", maxLength: 1500, nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    RepliedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>

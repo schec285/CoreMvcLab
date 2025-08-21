@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CoreMvcLab.Migrations
 {
     [DbContext(typeof(CoreMvcLabContext))]
-    [Migration("20250820180154_InitialCreate")]
+    [Migration("20250821160116_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -42,7 +42,6 @@ namespace CoreMvcLab.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("CreatedName")
-                        .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
@@ -75,10 +74,10 @@ namespace CoreMvcLab.Migrations
                         .HasMaxLength(1500)
                         .HasColumnType("nvarchar(1500)");
 
-                    b.Property<DateTime>("CreatedAt")
+                    b.Property<DateTime>("RepliedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("ReplyName")
+                    b.Property<string>("RepliedName")
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");

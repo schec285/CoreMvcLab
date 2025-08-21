@@ -1,17 +1,36 @@
-﻿@{
+﻿@model CoreMvcLab.Models.BoardViewModel
+
+@{
     ViewData["Title"] = "新規登録";
 }
 
 <h1 class="mb-4">新規登録</h1>
 
-<form>
-    <div class="mb-3">
-        <label for="title" class="form-label">タイトル</label>
-        <input type="text" class="form-control" id="title">
+<form asp-action="Create">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="mb-3 col-3">
+        <label asp-for="CreatedName" class="form-label"></label>
+        <input asp-for="CreatedName" class="form-control" placeholder="名無し"/>
+        <span asp-validation-for="CreatedName" class="text-danger"></span>
+    </div>
+    <div class="mb-3 col-5">
+        <span class="text-danger me-1">*</span><label asp-for="Title" class="form-label"></label>
+        <span asp-validation-for="Title" class="text-danger"></span>
+        <input asp-for="Title" class="form-control" />
     </div>
     <div class="mb-3">
-        <label for="exampleFormControlTextarea1" class="form-label">内容</label>
-        <textarea class="form-control" id="exampleFormControlTextarea1" rows="20"></textarea>
+        <span class="text-danger me-1">*</span><label asp-for="Body" class="form-label"></label>
+        <span asp-validation-for="Body" class="text-danger"></span>
+        <textarea asp-for="Body" class="form-control" rows="20"></textarea>
     </div>
-    <button type="submit" class="btn btn-primary">投稿</button>
+    <div class="col d-flex justify-content-end">
+        <button asp-action="Index" class="btn btn-secondary me-2">一覧へ戻る</button>
+        <button type="submit" class="btn btn-success">投稿</button>
+    </div>
 </form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

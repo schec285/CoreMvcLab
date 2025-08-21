@@ -20,3 +20,11 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.reply-list .my-3:last-of-type {
+    margin-bottom: 0 !important;
+}
+
+.reply-list .bg-light:nth-child(even) {
+    background-color: transparent !important;
+}

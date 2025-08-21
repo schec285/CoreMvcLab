@@ -23,32 +23,31 @@
     </div>
 </div>
 
+<hr />
 
-
-    @if (Model.Boards == null || !Model.Boards.Any())
-    {
-        <p>投稿はまだありません。</p>
-    }
-    else
-    {
-        <table class="table table-striped">
-            <thead>
+@if (Model.Boards == null || !Model.Boards.Any())
+{
+    <p>投稿はまだありません。</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>@Html.DisplayNameFor(Model => Model.Boards![0].Title)</th>
+                <th>@Html.DisplayNameFor(Model => Model.Boards![0].CreatedName)</th>
+                <th>@Html.DisplayNameFor(Model => Model.Boards![0].CreatedAt)</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var post in Model.Boards!)
+            {
                 <tr>
-                    <th>@Html.DisplayNameFor(Model => Model.Boards![0].Title)</th>
-                    <th>@Html.DisplayNameFor(Model => Model.Boards![0].CreatedName)</th>
-                    <th>@Html.DisplayNameFor(Model => Model.Boards![0].CreatedAt)</th>
+                    <td><a asp-action="Details" asp-route-id="@post.Id">@Html.DisplayFor(modelItem => post.Title)</a></td>
+                    <td>@Html.DisplayFor(modelItem => post.CreatedName)</td>
+                    <td>@Html.DisplayFor(modelItem => post.CreatedAt)</td>
                 </tr>
-            </thead>
-            <tbody>
-                @foreach (var post in Model.Boards!)
-                {
-                    <tr>
-                        <td>@Html.DisplayFor(modelItem => post.Title)</td>
-                        <td>@Html.DisplayFor(modelItem => post.CreatedName)</td>
-                        <td>@Html.DisplayFor(modelItem => post.CreatedAt)</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    }
-</div>
+            }
+        </tbody>
+    </table>
+}

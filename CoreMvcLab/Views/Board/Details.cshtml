@@ -1,0 +1,74 @@
+﻿@model CoreMvcLab.Models.BoardDetailsViewModel
+
+@{
+    ViewData["Title"] = "掲示板詳細";
+}
+
+<div class="my-3 p-3 rounded shadow-sm">
+    <h1 class="border-bottom pb-2 mb-0">@Html.DisplayFor(m => Model.Boards!.Title)</h1>
+
+    <div class="d-flex align-items-center text-body-secondary pt-3">
+        <strong class="text-gray-dark">@Html.DisplayFor(m => Model.Boards!.CreatedName)</strong><span class="ms-1" style="font-size: 0.8em">さん</span>
+    </div>
+    <div class="pt-3">
+        <p class="fs-4 lh-base">
+            @Html.DisplayFor(m => Model.Boards!.Body)
+        </p>
+    </div>
+    <div class="pt-3 border-top mt-3 text-muted small d-flex justify-content-between">
+        <span>投稿日: @Html.DisplayFor(m => m.Boards!.CreatedAt)</span>
+        <div class="d-flex align-items-center">
+            <span class="material-icons me-1">message</span>
+            <span>2</span>
+        </div>
+    </div>
+</div>
+
+<div class="reply-list my-2 p-2 border-start border-2 border-primary rounded">
+    <div class="bg-light">
+        <strong class="text-gray-dark">Html.DisplayFor(m => Model.Boards!.CreatedName)</strong><span class="ms-1" style="font-size: 0.8em">さん</span>
+        <div class="pt-3">
+            <p class="fs-4 lh-base">
+                Html.DisplayFor(m => Model.Boards!.Body)
+            </p>
+        </div>
+        <div class="border-bottom my-3 text-muted small d-flex justify-content-between">
+            <span>返信日: Html.DisplayFor(m => m.Boards!.CreatedAt)</span>
+        </div>
+    </div>
+
+    <div class="bg-light">
+        <strong class="text-gray-dark">Html.DisplayFor(m => Model.Boards!.CreatedName)</strong><span class="ms-1" style="font-size: 0.8em">さん</span>
+        <div class="pt-3">
+            <p class="fs-4 lh-base">
+                Html.DisplayFor(m => Model.Boards!.Body)
+            </p>
+        </div>
+        <div class="border-bottom my-3 text-muted small d-flex justify-content-between">
+            <span>返信日: Html.DisplayFor(m => m.Boards!.CreatedAt)</span>
+        </div>
+    </div>
+</div>
+
+<div>
+    <form asp-action="Reply">
+        <div class="mt-3 col-3">
+            @* TODO: boardDetailsViewModelじゃないの？ *@
+            <label for="asp-for" class="form-label"></label>
+            <input for="asp-for" class="form-control" placeholder="名無し" />
+        </div>
+        <div class="mt-1">
+            <textarea for="asp-for" class="form-control" rows="7"></textarea>
+        </div>
+        <div class="mt-3 col d-flex justify-content-end">
+            <button asp-action="Index" class="btn btn-secondary me-2">戻る</button>
+            <button type="submit" class="btn btn-success">返信</button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
