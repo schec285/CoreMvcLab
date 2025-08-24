@@ -58,9 +58,8 @@ public class BoardController : Controller
             };
             _context.Add(boards);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Details));
+            return RedirectToAction(nameof(Details), new { id = boards.Id});
         }
-
         return View(boardVM);
     }
 
@@ -71,54 +70,94 @@ public class BoardController : Controller
             return NotFound();
         }
 
-        var board = await _context.Boards
-            .FirstOrDefaultAsync(m => m.Id == id);
-        
-        if (board == null)
+        var boardVM = await _context.Boards
+            .Where(b => b.Id == id)
+            .Select(b => new BoardViewModel
+            {
+                Id = b.Id,
+                CreatedName = b.CreatedName,
+                Title = b.Title,
+                Body = b.Body,
+                CreatedAt = b.CreatedAt
+            })
+            .FirstOrDefaultAsync();
+
+        if (boardVM == null)
         {
             return NotFound();
         }
 
-        var boardVM = new BoardViewModel
-        {
-            Id = board.Id,
-            CreatedName = board.CreatedName,
-            Title = board.Title,
-            Body = board.Body,
-            CreatedAt = board.CreatedAt
-        };
+        var repliesVM = await _context.Replies
+            .Where(r => r.BoardId == id)
+            .Select(r => new ReplyViewModel
+            {
+                RepliedName = r.RepliedName,
+                Body = r.Body,
+                RepliedAt = r.RepliedAt
+            })
+            .ToListAsync();
 
         var detailsVM = new BoardDetailsViewModel
         {
-            Boards = boardVM
+            Boards = boardVM,
+            Replies = repliesVM
         };
 
         return View(detailsVM);
     }
 
-    [HttpPost]
+    [HttpPost, ActionName("Details")]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Reply(int boardId, [Bind("Id, RepliedName, Body")] ReplyViewModel ReplyVM)
+    public async Task<IActionResult> Reply(int id, [Bind(Prefix = "Reply")] ReplyViewModel ReplyVM)
     {
+        // 親スレッド存在確認
+        var board = await _context.Boards
+            .Where( b => b.Id == id)
+            .Select( b => new BoardViewModel
+            {
+                Id = b.Id,
+                CreatedName = b.CreatedName,
+                Title = b.Title,
+                Body = b.Body,
+                CreatedAt = b.CreatedAt
+            })
+            .FirstOrDefaultAsync();
 
-        if(boardId != ReplyVM.BoardId)
+        if (board == null)
         {
             return NotFound();
         }
 
         if (ModelState.IsValid)
         {
-            var replies = new Reply
+            var reply = new Reply
             {
                 Id = ReplyVM.Id,
-                BoardId = boardId,
+                BoardId = id,
                 RepliedName = ReplyVM.RepliedName ?? "名無し",
                 Body = ReplyVM.Body
             };
-            _context.Add(replies);
+            _context.Add(reply);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Details));
+            return RedirectToAction(nameof(Details), new {id});
         }
-        return View(ReplyVM);
+
+        var repliesVM = await _context.Replies
+            .Where(r => r.BoardId == id)
+            .Select(r => new ReplyViewModel
+            {
+                RepliedName = r.RepliedName,
+                Body = r.Body,
+                RepliedAt = r.RepliedAt
+            })
+            .ToListAsync();
+
+        var detailsVM = new BoardDetailsViewModel
+        {
+            Boards = board,
+            Replies = repliesVM,
+            Reply = ReplyVM
+        };
+        return View(detailsVM);
     }
 }

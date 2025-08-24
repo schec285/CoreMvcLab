@@ -4,6 +4,7 @@
     ViewData["Title"] = "掲示板詳細";
 }
 
+@* 親スレッド *@
 <div class="my-3 p-3 rounded shadow-sm">
     <h1 class="border-bottom pb-2 mb-0">@Html.DisplayFor(m => Model.Boards!.Title)</h1>
 
@@ -19,51 +20,56 @@
         <span>投稿日: @Html.DisplayFor(m => m.Boards!.CreatedAt)</span>
         <div class="d-flex align-items-center">
             <span class="material-icons me-1">message</span>
-            <span>2</span>
+            <span>@Model.Replies.Count</span>
         </div>
     </div>
 </div>
 
-<div class="reply-list my-2 p-2 border-start border-2 border-primary rounded">
-    <div class="bg-light">
-        <strong class="text-gray-dark">Html.DisplayFor(m => Model.Boards!.CreatedName)</strong><span class="ms-1" style="font-size: 0.8em">さん</span>
-        <div class="pt-3">
-            <p class="fs-4 lh-base">
-                Html.DisplayFor(m => Model.Boards!.Body)
-            </p>
-        </div>
-        <div class="border-bottom my-3 text-muted small d-flex justify-content-between">
-            <span>返信日: Html.DisplayFor(m => m.Boards!.CreatedAt)</span>
-        </div>
+@* 返信スレッド *@
+@if(Model.Replies == null || !Model.Replies!.Any())
+{
+    <div class="my-4 p-2">
+        <p class="fs-4">まだ返信はありません。</p>
     </div>
-
-    <div class="bg-light">
-        <strong class="text-gray-dark">Html.DisplayFor(m => Model.Boards!.CreatedName)</strong><span class="ms-1" style="font-size: 0.8em">さん</span>
-        <div class="pt-3">
-            <p class="fs-4 lh-base">
-                Html.DisplayFor(m => Model.Boards!.Body)
-            </p>
-        </div>
-        <div class="border-bottom my-3 text-muted small d-flex justify-content-between">
-            <span>返信日: Html.DisplayFor(m => m.Boards!.CreatedAt)</span>
-        </div>
+}
+else
+{
+    <div class="reply-list my-4 p-2 border-start border-2 border-primary rounded">
+        @foreach(var reply in Model.Replies!)
+        {
+            <div class="bg-light">
+                <strong class="text-gray-dark">@Html.DisplayFor(m => reply.RepliedName)</strong><span class="ms-1" style="font-size: 0.8em">さん</span>
+                <div class="pt-3">
+                    <p class="fs-4">
+                       @Html.DisplayFor(m => reply.Body)
+                    </p>
+                </div>
+                <div class="border-bottom my-3 text-muted small d-flex justify-content-between">
+                    <span>返信日: @Html.DisplayFor(m => reply.RepliedAt)</span>
+                </div>
+            </div>
+        }
     </div>
-</div>
+}
 
+@* 返信フォーム *@
 <div>
-    <form asp-action="Reply">
+    <form asp-action="Details">
         <div class="mt-3 col-3">
-            @* TODO: boardDetailsViewModelじゃないの？ *@
-            <label for="asp-for" class="form-label"></label>
-            <input for="asp-for" class="form-control" placeholder="名無し" />
+            <label asp-for="Reply.RepliedName" class="form-label"></label>
+            <input asp-for="Reply.RepliedName" class="form-control" placeholder="名無し" />
+            <span asp-validation-for="Reply.RepliedName" class="text-danger"></span>
         </div>
         <div class="mt-1">
-            <textarea for="asp-for" class="form-control" rows="7"></textarea>
+            <span class="text-danger me-1">*</span><label asp-for="Reply.Body" class="form-label"></label>
+            <span asp-validation-for="Reply.Body" class="text-danger"></span>
+            <textarea asp-for="Reply.Body" class="form-control" rows="7"></textarea>
         </div>
         <div class="mt-3 col d-flex justify-content-end">
             <button asp-action="Index" class="btn btn-secondary me-2">戻る</button>
             <button type="submit" class="btn btn-success">返信</button>
         </div>
+        <input type="hidden" asp-for="Boards.Id" />
     </form>
 </div>
 

@@ -14,8 +14,8 @@ public class BoardViewModel
 
     [Display(Name = "タイトル")]
     [RegularExpression(@"^[^\s].*", ErrorMessage = "先頭は空白以外にしてください")]
+    [StringLength(30, ErrorMessage = "30文字以内で入力してください")]
     [Required(ErrorMessage = RequiredErrMsg)]
-    [StringLength(30)]
     public string? Title { get; set; }
 
     [Display(Name = "内容")]
