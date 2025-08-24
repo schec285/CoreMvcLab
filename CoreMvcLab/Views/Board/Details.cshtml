@@ -20,7 +20,7 @@
         <span>投稿日: @Html.DisplayFor(m => m.Boards!.CreatedAt)</span>
         <div class="d-flex align-items-center">
             <span class="material-icons me-1">message</span>
-            <span>@Model.Replies.Count</span>
+            <span>@Model.Replies!.Count</span>
         </div>
     </div>
 </div>
